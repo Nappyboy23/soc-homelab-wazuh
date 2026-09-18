@@ -19,10 +19,12 @@ Dans le cadre de la préparation d'un profil SOC/Blue Team, ce projet consiste �
 
 ## Déploiement automatique
 
-Ce dépôt fournit des scripts génériques pour redéployer ce lab (manager +
-agent) sur **vos propres machines**, avec **vos propres identifiants**.
-Aucune information personnelle n'est codée en dur : tout se configure via un
-fichier local ignoré par git.
+Ce dépôt fournit tout le nécessaire pour redéployer ce lab (infrastructure
++ manager + agent) sur **votre propre compte cloud**, avec **vos propres
+identifiants**. Aucune information personnelle n'est codée en dur : tout se
+configure via des fichiers locaux ignorés par git.
+
+### Option A — vous avez déjà deux VM
 
 ```bash
 git clone https://github.com/Nappyboy23/soc-homelab-wazuh.git
@@ -32,11 +34,28 @@ $EDITOR config/deploy.env      # vos IP, clés SSH, IP admin autorisée...
 ./deploy.sh
 ```
 
-Le script installe Wazuh (manager+indexer+dashboard) sur la première
-machine, l'agent sur la seconde, les enrôle l'un à l'autre, puis restreint
-les ports exposés. Les identifiants du dashboard sont générés aléatoirement
-par l'installeur officiel Wazuh — ils ne sont ni choisis, ni transmis, ni
-stockés par ce projet.
+### Option B — partir de zéro sur Oracle Cloud (Terraform)
+
+Un module Terraform (`terraform/oci/`) provisionne l'infrastructure
+elle-même (VCN, subnet, groupes de sécurité, les deux instances Ubuntu en
+Always Free Tier), puis vous enchaînez avec `./deploy.sh` :
+
+```bash
+cd terraform/oci
+cp terraform.tfvars.example terraform.tfvars
+$EDITOR terraform.tfvars       # vos identifiants OCI
+terraform init && terraform apply
+```
+
+Guide détaillé : **[terraform/oci/README.md](terraform/oci/README.md)**.
+
+---
+
+Dans les deux cas, `deploy.sh` installe Wazuh (manager+indexer+dashboard)
+sur la première machine, l'agent sur la seconde, les enrôle l'un à l'autre,
+puis restreint les ports exposés. Les identifiants du dashboard sont
+générés aléatoirement par l'installeur officiel Wazuh — ils ne sont ni
+choisis, ni transmis, ni stockés par ce projet.
 
 Guide détaillé, prérequis et dépannage : **[docs/DEPLOY.md](docs/DEPLOY.md)**.
 
@@ -135,4 +154,4 @@ Une fois le test validé :
 - Test de détection malware (indicateurs de compromission)
 - Étude de règles complémentaires pour la détection de scans réseau (intégration Suricata ou règle personnalisée sur volume de connexions SYN)
 - Scripts opt-in pour rejouer les scénarios 1 et 2 de façon encadrée (voir `docs/DEPLOY.md` — Roadmap)
-- Module Terraform pour provisionner aussi les deux VM (OCI)
+- ~~Module Terraform pour provisionner aussi les deux VM (OCI)~~ ✅ voir `terraform/oci/`

@@ -10,3 +10,12 @@ config/deploy.env
 # Fichiers d'identifiants générés par l'installeur Wazuh
 wazuh-install-files.tar
 wazuh-passwords.txt
+
+# Terraform
+terraform/oci/terraform.tfvars
+terraform/oci/*.tfstate
+terraform/oci/*.tfstate.*
+terraform/oci/.terraform/
+terraform/oci/.terraform.lock.hcl
+terraform/oci/crash.log
+terraform/oci/*.tfplan

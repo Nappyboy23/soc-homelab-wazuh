@@ -1,0 +1,22 @@
+# Copiez ce fichier en "terraform.tfvars" (même dossier) et remplissez VOS
+# propres informations. terraform.tfvars est ignoré par git : vos identifiants
+# OCI ne seront jamais commités. Voir README.md pour savoir où trouver
+# chaque valeur.
+
+tenancy_ocid      = "ocid1.tenancy.oc1..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+user_ocid         = "ocid1.user.oc1..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+fingerprint       = "xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx"
+private_key_path  = "~/.oci/oci_api_key.pem"
+region            = "eu-marseille-1"
+compartment_ocid  = "ocid1.compartment.oc1..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+ssh_public_key_path = "~/.ssh/id_rsa.pub"
+
+# Votre IP publique en /32 (récupérable via: curl ifconfig.me)
+admin_cidr = "203.0.113.10/32"
+
+# Optionnel — valeurs par défaut déjà adaptées au Free Tier :
+# manager_ocpus           = 2
+# manager_memory_in_gbs   = 12
+# agent_shape             = "VM.Standard.E2.1.Micro"
+# boot_volume_size_in_gbs = 50

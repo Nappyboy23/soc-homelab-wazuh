@@ -10,13 +10,13 @@ avec vos propres informations — aucune info du dépôt d'origine n'est réutil
   l'installeur officiel Wazuh.
 - ✅ Enrôlement automatique de l'agent auprès du manager.
 - ✅ Restriction des ports côté OS (ufw/iptables) selon vos règles.
-- ❌ La création des machines elles-mêmes (OCI, AWS, VirtualBox...) — vous
-  devez avoir 2 VM Ubuntu 22.04/24.04 déjà prêtes, joignables en SSH avec un
-  utilisateur sudo.
-- ❌ Le firewall **cloud** (ex: OCI Security Lists / NSG, AWS Security
-  Groups). Il reste spécifique à votre fournisseur et doit autoriser les
-  mêmes ports que `install/03-configure-firewall.sh` configure côté OS :
-  `22`, `443`, `1514/tcp+udp`, `1515/tcp`, `55000/tcp`.
+- ✅ (si vous êtes sur Oracle Cloud) La création des machines elles-mêmes et
+  le firewall cloud, via le module Terraform `terraform/oci/` — voir
+  [terraform/oci/README.md](../terraform/oci/README.md). Sur un autre
+  fournisseur (AWS, VirtualBox...), vous devez avoir 2 VM Ubuntu 22.04/24.04
+  déjà prêtes, joignables en SSH avec un utilisateur sudo, et ouvrir
+  vous-même les ports `22`, `443`, `1514/tcp+udp`, `1515/tcp`, `55000/tcp`
+  au niveau du firewall cloud (ex: AWS Security Groups).
 
 ## Prérequis sur votre poste (celui qui lance le déploiement)
 
@@ -25,6 +25,12 @@ avec vos propres informations — aucune info du dépôt d'origine n'est réutil
 - Une clé SSH valide pour chacune des deux machines
 
 ## Étapes
+
+0. **Pas encore de VM ?** Si vous êtes sur Oracle Cloud, provisionnez-les
+   avec Terraform avant de continuer : voir
+   [terraform/oci/README.md](../terraform/oci/README.md). Une fois
+   `terraform apply` terminé, notez les deux IP publiques et reprenez à
+   l'étape 3 ci-dessous.
 
 1. **Cloner le dépôt et récupérer les scripts**
    ```bash
@@ -95,6 +101,7 @@ sudo ROLE=agent ALLOWED_ADMIN_CIDR=<votre_ip>/32 ./install/03-configure-firewall
 
 - [ ] Scripts optionnels pour rejouer les scénarios de détection (Nmap,
       Hydra) en mode encadré/opt-in
-- [ ] Module Terraform (OCI) pour provisionner aussi les deux VM
+- [x] Module Terraform (OCI) pour provisionner aussi les deux VM — voir
+      `terraform/oci/`
 - [ ] Intégration Suricata pour la détection réseau pure (cf. README,
       section "Enseignements clés")
