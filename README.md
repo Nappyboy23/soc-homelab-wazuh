@@ -17,6 +17,33 @@ Dans le cadre de la préparation d'un profil SOC/Blue Team, ce projet consiste �
 
 > Les adresses IP publiques et identifiants ont été retirés/anonymisés dans cette publication.
 
+## Déploiement automatique
+
+Ce dépôt fournit des scripts génériques pour redéployer ce lab (manager +
+agent) sur **vos propres machines**, avec **vos propres identifiants**.
+Aucune information personnelle n'est codée en dur : tout se configure via un
+fichier local ignoré par git.
+
+```bash
+git clone https://github.com/Nappyboy23/soc-homelab-wazuh.git
+cd soc-homelab-wazuh
+cp config/deploy.env.example config/deploy.env
+$EDITOR config/deploy.env      # vos IP, clés SSH, IP admin autorisée...
+./deploy.sh
+```
+
+Le script installe Wazuh (manager+indexer+dashboard) sur la première
+machine, l'agent sur la seconde, les enrôle l'un à l'autre, puis restreint
+les ports exposés. Les identifiants du dashboard sont générés aléatoirement
+par l'installeur officiel Wazuh — ils ne sont ni choisis, ni transmis, ni
+stockés par ce projet.
+
+Guide détaillé, prérequis et dépannage : **[docs/DEPLOY.md](docs/DEPLOY.md)**.
+
+Les scripts d'installation peuvent aussi être exécutés indépendamment,
+directement sur chaque machine (voir `docs/DEPLOY.md`) si vous préférez ne
+pas orchestrer depuis votre poste.
+
 ## Scénario 1 — Reconnaissance réseau (Nmap)
 
 **Objectif** : vérifier la visibilité d'un scan de reconnaissance dans les logs système, et comprendre pourquoi un scan simple ne déclenche pas nécessairement une alerte Wazuh.
@@ -107,3 +134,5 @@ Une fois le test validé :
 
 - Test de détection malware (indicateurs de compromission)
 - Étude de règles complémentaires pour la détection de scans réseau (intégration Suricata ou règle personnalisée sur volume de connexions SYN)
+- Scripts opt-in pour rejouer les scénarios 1 et 2 de façon encadrée (voir `docs/DEPLOY.md` — Roadmap)
+- Module Terraform pour provisionner aussi les deux VM (OCI)

@@ -1,4 +1,12 @@
+# Secrets et clés
 *.key
 *.pem
 .env
 credentials*
+
+# Config de déploiement personnelle (voir config/deploy.env.example)
+config/deploy.env
+
+# Fichiers d'identifiants générés par l'installeur Wazuh
+wazuh-install-files.tar
+wazuh-passwords.txt
